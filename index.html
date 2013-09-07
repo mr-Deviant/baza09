@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="ru" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="ru" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="ru" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="ru" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>База 09 Киева</title>
+        <meta name="description" content="База 09 Киева">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>window.html5 || document.write('<script src="js/libs/html5shiv.js"><\/script>')</script>
+        <![endif]-->
+
+        <!-- Made in Ukraine -->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+
+            <h1>База 09 г. Киева</h1>
+
+            <form id="form">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="phone-label" for="phone-number">Телефон:</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon phone-groups-addon">044</span>
+                                <input type="text" class="form-control input-large" maxlength="7" name="phone-number" id="phone-number" autofocus>
+                            </div>
+
+                            <span class="field-info">Все 7 цифр или начало номера</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="second-name">Фамилия:</label>
+                            <input type="text" class="form-control" name="second-name" id="second-name">
+                            <span class="field-info">Вы можете ввести только начало фамилии</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="first-name">Имя:</label>
+                            <input type="text" class="form-control" name="first-name" id="first-name">
+                            <span class="field-info">Первая буква имени</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="middle-name">Отчество:</label>
+                            <input type="text" class="form-control" name="middle-name" id="middle-name">
+                            <span class="field-info">Первая буква отчества</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="street">Улица:</label>
+                            <input type="text" class="form-control" name="street" id="street">
+                            <span class="field-info">Вы можете ввести только начало названия улицы</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="house">Дом:</label>
+                            <input type="text" class="form-control" name="house" id="house">
+                            <span class="field-info">Номер и буква дома</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="room">Квартира:</label>
+                            <input type="text" class="form-control" name="room" id="room">
+                            <span class="field-info">Номер и буква квартиры</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" id="searchButton" class="btn btn-primary">Поиск</button>
+                        <img src="img/loader.gif" width="32" height="32" alt="" class="loader">
+                    </div>
+                </div>
+                
+
+                <table class="table table-striped" id="results-table">
+                    <thead>
+                        <tr>
+                            <th>Телефон</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Улица</th>
+                            <th>Дом</th>
+                            <th>Квартира</th>
+                        </tr>
+                    <thead>
+                    <tbody id="found-items"></tbody>
+                    <tfoot>
+                        <td colpan="7">
+                            <a href="#" id="up">Наверх страницы</a>
+                        </td>
+                    </tfoot>
+                </table>
+                <div id="total-found"></div>
+
+                <div id="no-results">Ничего не найдено</div>
+
+                <div id="map"></div>
+
+            </form>
+        </div>
+
+
+<script type="text/x-handlebars-template" id="found-item-template">
+    <tr>
+        <td>{{phoneNumber}}</td>
+        <td>{{secondName}}</td>
+        <td>{{firstName}}</td>
+        <td>{{middleName}}</td>
+        <td>{{street}}</td>
+        <td>{{house}}</td>
+        <td>{{room}}</td>
+    </tr>
+</script>
+
+<script type="text/x-handlebars-template" id="total-found-template">
+    Всего найдено: {{total}}
+</script>
+
+<script type="text/x-handlebars-template" id="found-item-map-template">
+    <div><strong>Телефон:</strong> <em>{{phoneNumber}}</em></div>
+    <div><strong>ФИО:</strong> <em>{{secondName}} {{firstName}} {{middleName}}</em></div>
+    <div>
+        <strong>Адрес:</strong> <em>{{street}}{{#if house}}, {{house}}{{/if}}{{#if room}}, кв. {{room}}{{/if}}</em></div>
+</script>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/libs/jquery-1.10.1.min.js"><\/script>')</script>
+        <script src="js/libs/jquery.validate.min.js"></script>
+        <script src="js/libs/jquery.autocomplete.min.js"></script>
+        <script src="js/libs/underscore-min.js"></script>
+        <script src="js/libs/backbone-min.js"></script>
+        <script src="js/libs/handlebars.js"></script>
+        <script src="js/libs/bootstrap.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script src="js/models/base09.js"></script>
+        <script src="js/collections/bases09.js"></script>
+        <script src="js/views/app-view.js"></script>
+        <script src="js/views/found-item-view.js"></script>
+        <script src="js/views/found-item-map-view.js"></script>
+        <script src="js/app.js"></script>
+
+        <!-- <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script> -->
+    </body>
+</html>

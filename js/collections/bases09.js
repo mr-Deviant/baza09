@@ -1,14 +1,16 @@
-var app = app || {};
-
-(function() {
+/*global define*/
+define([
+	'underscore',
+	'backbone',
+	'models'
+], function(_, Backbone, Models) {
 	'use strict';
 
 	// Collections
 	var Bases09 = Backbone.Collection.extend({
-		model: app.Base09,
+		model: Models,
 		url: '/action.php?action=performSearch'
 	});
 
-	app.bases09 = new Bases09();
-
-})();
+	return new Bases09();
+});

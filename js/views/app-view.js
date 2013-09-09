@@ -1,14 +1,24 @@
-var app = app || {};
-
-(function($){
+/*global define*/
+define([
+	'underscore',
+	'backbone',
+	'jquery',
+	'validate',
+	'autocomplete',
+	'handlebars',
+	'collections',
+	'found-item-view',
+	'found-item-map-view',
+	'text!total-found-template'
+], function(_, Backbone, $, _Validate, _Autocomplete, Handlebars, Bases09, FoundItemView, FoundItemMapView, TotalFoundTemplate) {
 	'use strict';
 
-	app.AppView = Backbone.View.extend({
+	var AppView = Backbone.View.extend({
 		// Backbone will bind events to this element
 		el: '.container',
 
 		// Template for total found statistics
-		totalFoundTemplate: Handlebars.compile($('#total-found-template').html()),
+		totalFoundTemplate: Handlebars.compile(TotalFoundTemplate),
 
 		// The DOM events specific to an item
 		events: {
@@ -19,12 +29,14 @@ var app = app || {};
 		// Bind to the relevant events on the collection, when items are changed
 		initialize: function() {
 			// Add event is fired for each model in collection
-			window.app.bases09.on('add', function(model) {
-				this.addOne(model);
-				//this.render();
-			}, this);
+			// window.app.bases09.on('add', function(model) {
+			// 	this.addOne(model);
+			// 	//this.render();
+			// }, this);
+			this.listenTo(Bases09, 'add', this.addOne);
 
-			window.app.bases09.on('reset', this.reset, this);
+			//window.app.bases09.on('reset', this.reset, this);
+			this.listenTo(Bases09, 'reset', this.reset);
 
 			// Set fields autocomplete
 			this.setFieldsAutocomplete();
@@ -39,7 +51,7 @@ var app = app || {};
 
 		// Update total found statistics
 		render: function() {
-			var total = app.bases09.length;
+			var total = Bases09.length;
 			
 			// Hide loading image below Search button
 			$('.loader').hide();
@@ -51,7 +63,7 @@ var app = app || {};
 				}));
 				$('#results-table, #total-found').show();
 
-				var foundItemMapView = new app.FoundItemMapView();
+				var foundItemMapView = new FoundItemMapView();
 			} else {
 				$('#no-results').show();
 			}
@@ -59,7 +71,7 @@ var app = app || {};
 
 		// Add one found result
 		addOne: function(model) {
-			var foundItemView = new app.FoundItemView({model: model});
+			var foundItemView = new FoundItemView({model: model});
 		},
 
 		// Make server call for search results
@@ -86,10 +98,10 @@ var app = app || {};
 			var data = $('form').serialize();
 
 			// Delete previous models from collection
-			app.bases09.reset();
+			Bases09.reset();
 
 			// Send data to server
-			app.bases09.fetch({
+			Bases09.fetch({
 				data: data,
 				success: function(){
 					_this.render();
@@ -219,4 +231,6 @@ var app = app || {};
 			});
 		}
 	});
-})(jQuery);
+
+	return AppView;
+});

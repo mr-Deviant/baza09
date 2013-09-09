@@ -1,5 +1,5 @@
 <?php
-require '../php/Db.php';
+require '../../php/Db.php';
 
 class Coordinates extends Db {
 	private $importFile = 'db.txt';

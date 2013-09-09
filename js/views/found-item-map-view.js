@@ -1,21 +1,28 @@
-var app = app || {};
-
-(function($){
+/*global define*/
+define([
+	'underscore',
+	'backbone',
+	'jquery',
+	'handlebars',
+	'collections',
+	'text!found-item-map-template',
+	'async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'
+], function(_, Backbone, $, Handlebars, Bases09, FoundItemMapTemplate, _Gmaps) {
 	'use strict';
 
-	app.FoundItemMapView = Backbone.View.extend({
+	var FoundItemMapView = Backbone.View.extend({
 		// Bind application to the existing element
 		el: '#map',
 
 		// Total found items template
-		itemTemplate: Handlebars.compile($('#found-item-map-template').html()),
+		itemTemplate: Handlebars.compile(FoundItemMapTemplate),
 
 		initialize: function() {
 			// Check if we have to show map (have results with coordinates)
 			var showMap = false;
 
-			for (var i = 0; i < app.bases09.length; i++) {
-				if (app.bases09.models[i].get('lat')) {
+			for (var i = 0; i < Bases09.length; i++) {
+				if (Bases09.models[i].get('lat')) {
 					showMap = true;
 					break;
 				}
@@ -30,7 +37,7 @@ var app = app || {};
 			$('#map').show();
 
 			// Initialize map
-			app.map = new google.maps.Map(document.getElementById('map'), {
+			var map = new google.maps.Map(document.getElementById('map'), {
 			    zoom: 11,
 			    center: new google.maps.LatLng(50.4505, 30.523),
 			    mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -38,8 +45,8 @@ var app = app || {};
 
 			// Add markers on map
 			// https://developers.google.com/maps/documentation/javascript/overlays?hl=ru
-			for (var i = 0; i < app.bases09.length; i++) {
-				var model = app.bases09.models[i],
+			for (var i = 0; i < Bases09.length; i++) {
+				var model = Bases09.models[i],
 					lat = parseFloat(model.get('lat')),
 					lon = parseFloat(model.get('lon'));
 
@@ -63,12 +70,12 @@ var app = app || {};
 						
 						var marker = new google.maps.Marker({
 						    position: latlng,
-						    map: app.map,
+						    map: map,
 						    title: model.get('phoneNumber')
 						});
 
 						google.maps.event.addListener(marker, 'click', function() {
-							infoWindow.open(app.map, marker);
+							infoWindow.open(map, marker);
 						});
 					})();	
 				}
@@ -83,4 +90,6 @@ var app = app || {};
 			return random;
 		}
 	});
-})(jQuery);
+
+	return FoundItemMapView;
+});

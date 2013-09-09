@@ -132,45 +132,7 @@
             </form>
         </div>
 
-
-<script type="text/x-handlebars-template" id="found-item-template">
-    <tr>
-        <td>{{phoneNumber}}</td>
-        <td>{{secondName}}</td>
-        <td>{{firstName}}</td>
-        <td>{{middleName}}</td>
-        <td>{{street}}</td>
-        <td>{{house}}</td>
-        <td>{{room}}</td>
-    </tr>
-</script>
-
-<script type="text/x-handlebars-template" id="total-found-template">
-    Всего найдено: {{total}}
-</script>
-
-<script type="text/x-handlebars-template" id="found-item-map-template">
-    <div><strong>Телефон:</strong> <em>{{phoneNumber}}</em></div>
-    <div><strong>ФИО:</strong> <em>{{secondName}} {{firstName}} {{middleName}}</em></div>
-    <div>
-        <strong>Адрес:</strong> <em>{{street}}{{#if house}}, {{house}}{{/if}}{{#if room}}, кв. {{room}}{{/if}}</em></div>
-</script>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/libs/jquery-1.10.1.min.js"><\/script>')</script>
-        <script src="js/libs/jquery.validate.min.js"></script>
-        <script src="js/libs/jquery.autocomplete.min.js"></script>
-        <script src="js/libs/underscore-min.js"></script>
-        <script src="js/libs/backbone-min.js"></script>
-        <script src="js/libs/handlebars.js"></script>
-        <script src="js/libs/bootstrap.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <script src="js/models/base09.js"></script>
-        <script src="js/collections/bases09.js"></script>
-        <script src="js/views/app-view.js"></script>
-        <script src="js/views/found-item-view.js"></script>
-        <script src="js/views/found-item-map-view.js"></script>
-        <script src="js/app.js"></script>
+        <script data-main="js/app.js" src="js/libs/require.js"></script>
 
         <!-- <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

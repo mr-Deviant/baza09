@@ -1,9 +1,11 @@
-var app = app || {};
-
-(function(){
+/*global define*/
+define([
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	'use strict';
 
-	app.Base09 = Backbone.Model.extend({
+	var Base09 = Backbone.Model.extend({
 		// Default attribute values
 		defaults: {
 			phoneNumber: '',
@@ -17,4 +19,6 @@ var app = app || {};
 			lon:         ''
 		}
 	});
-})();
+
+	return Base09;
+});

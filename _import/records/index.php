@@ -1,5 +1,5 @@
 <?php
-require '../php/Db.php';
+require '../../php/Db.php';
 
 class DbImport extends Db {
 	private $importFile = 'db.txt';

@@ -1,8 +1,12 @@
-'use strict';
-
 require.config({
-	baseUrl: 'js',
+	baseUrl: '../js',
+	// Disable files caching
+	urlArgs: 'cb=' + Math.random(),
 	paths: {
+		'jasmine':                 '../test/lib/jasmine/jasmine',
+		'jasmine-html':            '../test/lib/jasmine/jasmine-html',
+		'jasmine-jquery':          '../test/lib/jasmine-jquery',
+
 		'text':                    'libs/require/text',
 		'async':                   'libs/require/async',
 		'underscore':              'libs/underscore-min',
@@ -23,6 +27,20 @@ require.config({
 		'found-item-map-template': 'templates/found-item-map-template.html'
 	},
 	shim: {
+		'jasmine': {
+			exports: 'jasmine'
+		},
+		'jasmine-html': {
+			deps: ['jasmine'],
+			exports: 'jasmine'
+		},
+		'jasmine-jquery': {
+			deps: ['jquery', 'jasmine-html']
+		},
+		'jasmine-ajax': {
+			deps: ['jquery', 'jasmine-html']
+		},
+
 		'underscore': {
 			exports: '_'
 		},
@@ -47,8 +65,28 @@ require.config({
 	}
 });
 
-require(['jquery', 'app-view'], function($, AppView) {
-    $(document).ready(function() {
-		new AppView();
+require(['jquery', 'jasmine-html'], function($, jasmine) {
+
+	var jasmineEnv = jasmine.getEnv();
+	jasmineEnv.updateInterval = 1000;
+
+	var htmlReporter = new jasmine.HtmlReporter();
+
+	jasmineEnv.addReporter(htmlReporter);
+
+	jasmineEnv.specFilter = function(spec) {
+		return htmlReporter.specFilter(spec);
+	};
+
+	var specs = [];
+
+	// specs.push('../test/spec/models/base09-spec');
+	// specs.push('../test/spec/collections/bases09-spec');
+	specs.push('../test/spec/views/app-view-spec');
+
+	$(function() {
+		require(specs, function() {
+			jasmineEnv.execute();
+		});
 	});
 });

@@ -27,7 +27,7 @@ define([
 		},
 
 		// Bind to the relevant events on the collection, when items are changed
-		initialize: function() {
+		initialize: function() {console.log('app init');
 			// Add event is fired for each model in collection
 			// window.app.bases09.on('add', function(model) {
 			// 	this.addOne(model);
@@ -130,7 +130,7 @@ define([
 		},
 
 		setFormValidator: function() {
-			$(document).ready(function() {
+			//$(document).ready(function() {
 				var $phoneNumber = $('#phone-number'),
 					$secondName  = $('#second-name'),
 					$firstName   = $('#first-name'),
@@ -228,7 +228,7 @@ define([
 					onfocusout: false,
 			        onkeyup: false
 				});
-			});
+			//});
 		}
 	});
 

@@ -3,7 +3,9 @@
 require.config({
 	baseUrl: 'js',
 	// Disable files caching
-	urlArgs: 'cb=' + Math.random(),
+	urlArgs: 'bust=' + (new Date()).getTime(),
+	// If loded modules don't use "define" then throw error
+	// enforceDefine: true,
 	paths: {
 		'text':                    'libs/require/text',
 		'async':                   'libs/require/async',
@@ -50,11 +52,9 @@ require.config({
 	}
 });
 
-require(['underscore', 'backbone', 'jquery', 'app-view', 'router'], function(_, Backbone, $, AppView, Router) {
-
-	//$(document).ready(function() {
-		new AppView();
-	//});
+require(['underscore', 'backbone', 'jquery', 'router'], function(_, Backbone, $, Router) {
+//define(['underscore', 'backbone', 'jquery', 'app-view', 'router'], function(_, Backbone, $, AppView, Router) {
+	'use strict';
 
 	var router = new Router();
 

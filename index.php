@@ -1,6 +1,6 @@
 <?php
 
-require '/php/PhoneInfo.php';
+require 'php/PhoneInfo.php';
 
 $phone = !empty($_GET['phone']) ? $_GET['phone'] : '';
 
@@ -19,12 +19,12 @@ $phoneInfo = $phoneInfo->execute($phone);
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <?php
         if (!$phoneInfo):
-            ?><title>Телефонный справочник Киева 2013, база 09 Киев и Киевская область, телефонная база г. Киев</title><!-- с картой -->
-        <meta name="description" content="☎ Телефонный справочник г. Киев, база 09 Киева и области, поиск людей по телефону, фамилии или адресу">
+            ?><title>Телефонный справочник Киева 2013, база 09 Киев и Киевская область, телефонная база г. Киев</title>
+        <meta name="description" content="☎ Телефонный справочник г. Киев, база 09 Киева и области с интерактивной картой, поиск людей по телефону, фамилии или адресу">
         <?php
         else:
-            ?><title>Телефонный справочник Киева: (044) <?php echo $phoneInfo['phoneNumber']; ?>, <?php echo rtrim($phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName']); ?>, <?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', дом ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?></title>
-        <meta name="description" content="☎ Результаты поиска. Телефон: (044) <?php echo $phoneInfo['phoneNumber']; ?>. ФИО: <?php echo str_replace('"', "'", rtrim($phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName'])); ?>. Адрес: <?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', дом ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?>">
+            ?><title>Телефонный справочник Киева: <?php echo $phoneInfo['title']; ?></title>
+        <meta name="description" content="☎ Результаты поиска. <?php echo $phoneInfo['description']; ?>">
         <?php
         endif;
         ?><meta name="keywords" content="Телефонный справочник, база 09, Киев, Киевская область, телефонная база, база телефонов, справочник номеров, телефонная книга, поиск людей по номеру телефона">
@@ -54,15 +54,19 @@ $phoneInfo = $phoneInfo->execute($phone);
 
             <h1>База 09 г. Киева</h1>
 
-            <?php if ($phoneInfo): ?>
-            <address id="phone-info">
+            <?php if ($phoneInfo):
+            ?><address id="phone-info">
                 <dl class="dl-horizontal">
                     <dt>Телефон:</dt>
                     <dd>(044) <?php echo $phoneInfo['phoneNumber']; ?></dd>
-                    <dt>ФИО:</dt>
-                    <dd><?php echo $phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName']; ?></dd>
-                    <dt>Адрес:</dt>
-                    <dd><?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?></dd>
+                    <?php if ($phoneInfo['secondName']):
+                        ?><dt>ФИО:</dt>
+                        <dd><?php echo rtrim($phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName']); ?></dd>
+                    <?php endif; ?>
+                    <?php if ($phoneInfo['address']):
+                        ?><dt>Адрес:</dt>
+                        <dd><?php echo $phoneInfo['address']; ?></dd>
+                    <?php endif;?>
                 </dl>
             </address>
             <?php endif; ?>
@@ -170,7 +174,7 @@ $phoneInfo = $phoneInfo->execute($phone);
 
             </form>
 
-            <article style="color: #999; font-size: 10px;">Телефонный справочник 2013 г. Киева и Киевской области. Самая свежая база 09 городских телефонных номеров Киева. Телефонная база стационархых телефонов Киева. Удобный поиск людей по телефону, фамилии или адресу.</article>
+            <article style="color: #999; font-size: 10px;">Телефонный справочник 2013 г. Киева и Киевской области. Самая свежая база 09 городских телефонных номеров Киева. Телефонная база стационархых телефонов Киева c интерактивной картой. Удобный поиск людей по телефону, фамилии или адресу.</article>
 
         </div>
 

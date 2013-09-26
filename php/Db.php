@@ -12,7 +12,7 @@ class Db {
 
 	public function __construct() {
 		// Live site settings
-		if ($_SERVER['HTTP_HOST'] == 'baza09.com.ua') {
+		if (preg_match('/baza09\.com\.ua$/', $_SERVER['HTTP_HOST'])) {
 			$this->dbDatabase = 'deviant_baza09';
 			$this->dbUser     = 'deviant_baza09';
 			$this->dbPassword = 'j7Jgd9Jd';

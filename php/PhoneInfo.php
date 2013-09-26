@@ -1,5 +1,5 @@
 <?php
-require '/php/Db.php';
+require 'php/Db.php';
 
 class PhoneInfo extends Db {
 	public function execute($phoneNumber) {
@@ -74,6 +74,45 @@ class PhoneInfo extends Db {
 					'lat'        => $row->lat,
 					'lon'        => $row->lon
 				);
+
+				// Address for title
+				$title = array (
+		            '(044) '. $return['phoneNumber']
+		        );
+
+		        $address = array();
+
+		        if ($return['secondName']) {
+		        	$title[] = rtrim($return['secondName'] . ' ' . $return['firstName'] . ' ' . $return['middleName']);
+		        }
+		        if ($return['street']) {
+		            $title[] = $address[] = 'ул.' . $return['street'];
+		        }
+		        if ($return['house']) {
+		            $title[] = $address[] = 'дом ' . $return['house'];
+		        }
+		        if ($return['room']) {
+		            $title[] = $address[] = 'кв. ' . $return['room'];
+		        }
+		        $return['title'] = implode(', ', $title);
+
+		        $return['address'] = implode(', ', $address);
+
+		        // Address for description
+		        $description = array (
+		        	'Телефон: (044) ' . $return['phoneNumber']
+		        );
+		        if ($return['secondName']) {
+		        	$description[] = 'ФИО: ' . str_replace('"', "'", rtrim($return['secondName'] . ' ' . $return['firstName'] . ' ' . $return['middleName']));
+		        }
+		        if ($return['street'] || $return['house'] || $return['room']) {
+		        	$description[] = 'Адрес: ' . $return['address'];
+		        }
+				$return['description'] = implode('. ', $description);
+		       
+
+
+
 			}
 
 		} catch (PDOException $e) {

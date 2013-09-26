@@ -19,6 +19,9 @@
     display: none;
     margin: 40px 0px;
 }
+.index #found-items tr {
+    cursor: pointer;
+}
 #no-results {
     display: none;
     font-size: 24px;
@@ -62,3 +65,12 @@
 }
 
 /*** Autocomplete end ***/
+
+#phone-info {
+    position: absolute;
+    left: -9999px;
+    background-color: #eee;
+    border-left: 5px solid #333;
+    font-size: 24px;
+    padding: 24px 0px;
+}

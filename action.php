@@ -173,38 +173,42 @@ class Base09Actions extends Db {
 
 // echo vsprintf(str_replace('?', '"%s"', $query), $queryValues);exit;
 
-			$sth = $this->db->prepare($query);
+			// If at least one search parameter was passed
+			if (sizeof($queryValues)) {
 
-			$sth->execute($queryValues);
+				$sth = $this->db->prepare($query);
 
-			$results = $sth->fetchAll(PDO::FETCH_OBJ);
+				$sth->execute($queryValues);
 
-			foreach ($results as $row) {
-				$return[] = array(
-					'phoneNumber' => $row->phone_number,
-					'secondName'  => $row->second_name,
-					'firstName'   => $row->first_name,
-					'middleName'  => $row->middle_name,
-					'street'      => ($row->street_type ? ($row->street_type . ' ') : '') .
-						$row->street_name .
-						($row->location_name ? (' (' . $row->location_name . ')') : ''),
-					'house'       => $row->house_num ? ($row->house_num .
-						($row->house_block
-							? (is_numeric($row->house_block[0])
-								? '/'
-								: (is_string($row->house_block[0]) ? '-' : ' '))
-								. $row->house_block
-							: '')) : '',
-					'room'        => $row->room_num ? ($row->room_num .
-						($row->room_letter
-							? (is_numeric($row->room_letter[0])
-								? '/'
-								: (is_string($row->room_letter[0]) ? '-' : ' '))
-								. $row->room_letter
-							: '')) : '',
-					'lat'        => $row->lat,
-					'lon'        => $row->lon
-				);
+				$results = $sth->fetchAll(PDO::FETCH_OBJ);
+
+				foreach ($results as $row) {
+					$return[] = array(
+						'phoneNumber' => $row->phone_number,
+						'secondName'  => $row->second_name,
+						'firstName'   => $row->first_name,
+						'middleName'  => $row->middle_name,
+						'street'      => ($row->street_type ? ($row->street_type . ' ') : '') .
+							$row->street_name .
+							($row->location_name ? (' (' . $row->location_name . ')') : ''),
+						'house'       => $row->house_num ? ($row->house_num .
+							($row->house_block
+								? (is_numeric($row->house_block[0])
+									? '/'
+									: (is_string($row->house_block[0]) ? '-' : ' '))
+									. $row->house_block
+								: '')) : '',
+						'room'        => $row->room_num ? ($row->room_num .
+							($row->room_letter
+								? (is_numeric($row->room_letter[0])
+									? '/'
+									: (is_string($row->room_letter[0]) ? '-' : ' '))
+									. $row->room_letter
+								: '')) : '',
+						'lat'        => $row->lat,
+						'lon'        => $row->lon
+					);
+				}
 			}
 
 // echo $query;
@@ -268,8 +272,13 @@ class Base09Actions extends Db {
 
 		$return = array('query' => 'Li', 'suggestions' => $results);
 
+		// Json response
 		echo json_encode($return);
 		
+		// Jsonp response
+		// header('Content-type: application/json');
+		// echo $_REQUEST['callback'] . '('. json_encode($return) .')';
+
 		exit;
 	}
 

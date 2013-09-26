@@ -2,6 +2,8 @@
 
 require.config({
 	baseUrl: 'js',
+	// Disable files caching
+	urlArgs: 'cb=' + Math.random(),
 	paths: {
 		'text':                    'libs/require/text',
 		'async':                   'libs/require/async',
@@ -18,6 +20,7 @@ require.config({
 		'app-view':                'views/app-view',
 		'found-item-view':         'views/found-item-view',
 		'found-item-map-view':     'views/found-item-map-view',
+		'router':                  'routers/router',
 		'found-item-template':     'templates/found-item-template.html',
 		'total-found-template':    'templates/total-found-template.html',
 		'found-item-map-template': 'templates/found-item-map-template.html'
@@ -47,8 +50,15 @@ require.config({
 	}
 });
 
-require(['jquery', 'app-view'], function($, AppView) {
-    $(document).ready(function() {
+require(['underscore', 'backbone', 'jquery', 'app-view', 'router'], function(_, Backbone, $, AppView, Router) {
+
+	//$(document).ready(function() {
 		new AppView();
-	});
+	//});
+
+	var router = new Router();
+
+	// Start using History API, use / instead of #
+	Backbone.history.start({pushState: true});
+
 });

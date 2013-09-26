@@ -1,17 +1,42 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="ru" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="ru" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="ru" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="ru" class="no-js"> <!--<![endif]-->
+<?php
+
+require '/php/PhoneInfo.php';
+
+$phone = !empty($_GET['phone']) ? $_GET['phone'] : '';
+
+$htmlClass = $phone ? 'phone-number' : 'index';
+
+$phoneInfo = new PhoneInfo();
+$phoneInfo = $phoneInfo->execute($phone);
+
+?><!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="ru" class="no-js lt-ie9 lt-ie8 lt-ie7 <?php echo $htmlClass; ?>"> <![endif]-->
+<!--[if IE 7]>         <html lang="ru" class="no-js lt-ie9 lt-ie8 <?php echo $htmlClass; ?>"> <![endif]-->
+<!--[if IE 8]>         <html lang="ru" class="no-js lt-ie9 <?php echo $htmlClass; ?>"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="ru" class="no-js <?php echo $htmlClass; ?>"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>База 09 Киева</title>
-        <meta name="description" content="База 09 Киева">
+        <?php
+        if (!$phoneInfo):
+            ?><title>Телефонный справочник Киева 2013, база 09 Киев и Киевская область, телефонная база г. Киев</title><!-- с картой -->
+        <meta name="description" content="☎ Телефонный справочник г. Киев, база 09 Киева и области, поиск людей по телефону, фамилии или адресу">
+        <?php
+        else:
+            ?><title>Телефонный справочник Киева: (044) <?php echo $phoneInfo['phoneNumber']; ?>, <?php echo rtrim($phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName']); ?>, <?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', дом ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?></title>
+        <meta name="description" content="☎ Результаты поиска. Телефон: (044) <?php echo $phoneInfo['phoneNumber']; ?>. ФИО: <?php echo str_replace('"', "'", rtrim($phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName'])); ?>. Адрес: <?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', дом ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?>">
+        <?php
+        endif;
+        ?><meta name="keywords" content="Телефонный справочник, база 09, Киев, Киевская область, телефонная база, база телефонов, справочник номеров, телефонная книга, поиск людей по номеру телефона">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+        <!--link rel="stylesheet/less" type="text/css" href="styles.less" />
+        <script src="/js/less.js" type="text/javascript"></script--s>
 
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +54,19 @@
 
             <h1>База 09 г. Киева</h1>
 
+            <?php if ($phoneInfo): ?>
+            <address id="phone-info">
+                <dl class="dl-horizontal">
+                    <dt>Телефон:</dt>
+                    <dd>(044) <?php echo $phoneInfo['phoneNumber']; ?></dd>
+                    <dt>ФИО:</dt>
+                    <dd><?php echo $phoneInfo['secondName'] . ' ' . $phoneInfo['firstName'] . ' ' . $phoneInfo['middleName']; ?></dd>
+                    <dt>Адрес:</dt>
+                    <dd><?php echo $phoneInfo['street'] . ($phoneInfo['house'] ? ', ' . $phoneInfo['house'] : '') . ($phoneInfo['room'] ? ', кв. ' . $phoneInfo['room'] : ''); ?></dd>
+                </dl>
+            </address>
+            <?php endif; ?>
+
             <form id="form">
 
                 <div class="row">
@@ -38,7 +76,7 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon phone-groups-addon">044</span>
-                                <input type="text" class="form-control input-large" maxlength="7" name="phone-number" id="phone-number" autofocus>
+                                <input type="tel" class="form-control input-large" name="phone-number" id="phone-number" autofocus>
                             </div>
 
                             <span class="field-info">Все 7 цифр или начало номера</span>
@@ -102,7 +140,6 @@
                         <img src="img/loader.gif" width="32" height="32" alt="" class="loader">
                     </div>
                 </div>
-                
 
                 <table class="table table-striped" id="results-table">
                     <thead>
@@ -118,9 +155,11 @@
                     <thead>
                     <tbody id="found-items"></tbody>
                     <tfoot>
-                        <td colspan="7">
-                            <a href="#" id="up">Наверх страницы</a>
-                        </td>
+                        <tr>
+                            <td colspan="7">
+                                <a href="#" id="up">Наверх страницы</a>
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
                 <div id="total-found"></div>
@@ -130,9 +169,12 @@
                 <div id="map"></div>
 
             </form>
+
+            <article style="color: #999; font-size: 10px;">Телефонный справочник 2013 г. Киева и Киевской области. Самая свежая база 09 городских телефонных номеров Киева. Телефонная база стационархых телефонов Киева. Удобный поиск людей по телефону, фамилии или адресу.</article>
+
         </div>
 
-        <script src="js/libs/require.js" data-main="js/app.js"></script>
+        <script src="/js/libs/require.js" data-main="/js/app.js"></script>
 
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -1,5 +1,6 @@
 <?php
 class Db {
+	// Local site settings
 	private $dbEngine   = 'mysql'; 
 	private $dbHost     = 'localhost';
 	private $dbDatabase = 'base09';
@@ -10,6 +11,13 @@ class Db {
 	protected $db;
 
 	public function __construct() {
+		// Live site settings
+		if ($_SERVER['HTTP_HOST'] == 'baza09.com.ua') {
+			$this->dbDatabase = 'deviant_baza09';
+			$this->dbUser     = 'deviant_baza09';
+			$this->dbPassword = 'j7Jgd9Jd';
+		}
+
 		try {
 		    $this->db = new PDO(
 				$this->dbEngine . ':dbname=' . $this->dbDatabase . ';host=' . $this->dbHost,

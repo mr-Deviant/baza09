@@ -31,12 +31,12 @@ $phoneInfo = $phoneInfo->execute($phone);
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/main.css">
+        <!--link rel="stylesheet" href="/css/main.css"-->
 
         <link rel="shortcut icon" href="/favicon.ico">
 
-        <!--link rel="stylesheet/less" type="text/css" href="styles.less" />
-        <script src="/js/less.js" type="text/javascript"></script--s>
+        <link rel="stylesheet/less" type="text/css" href="/css/main.less" />
+        <script type="text/javascript" src="/js/libs/less-1.4.1.min.js"></script>
 
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>

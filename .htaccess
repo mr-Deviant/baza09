@@ -1,3 +1,9 @@
+# AuthGroupFile /dev/null
+# AuthType Basic
+# AuthUserFile /home/deviant/domains/baza09.com.ua/public_html/.htpasswd
+# AuthName "Protected area"
+# require valid-user
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
